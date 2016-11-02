@@ -21,7 +21,7 @@ bigInt::bigInt(int big2)
 
 bigInt::bigInt(bigInt &big)
 {
-	
+
 }
 
 void bigInt::readNumber(ifstream &in)
@@ -62,4 +62,14 @@ bigInt* bigInt::multiply(bigInt &big2)
 void setNext(bigInt &big2)
 {
 
+}
+
+bigInt* getItem()
+{
+	return big;
+}
+
+bigInt* getNext()
+{
+	return next;
 }
