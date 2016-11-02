@@ -1,8 +1,8 @@
 /*
- * Name:
- * Date:
+ * Name: Dylan Wilcox Nicholas Gustafson
+ * Date: 3 November 2016
  * File: list.cpp
- * Description
+ * Description: Contains all the opertions for our list
  */
 #include "list.h"
 #include <iostream>
@@ -10,7 +10,6 @@
 
 /*
  * Default List constructor.
- * Hint: set member variables to NULL.
  */
 List::List()
 {
@@ -20,7 +19,6 @@ List::List()
 
 /*
  * Destructor for the List.
- * This has already been implemented.
  */
 List::~List()
 {
@@ -37,7 +35,6 @@ List::~List()
 
 /*
  * Add a new Node to the head of the list.
- * Hint: same concept as the C version.
  */
 void List::addFirst(void* obj)
 {
@@ -53,7 +50,6 @@ void List::addFirst(void* obj)
 
 /*
  * Resets the current to the head.
- * Hint: same concept as the C version.
  */
 void List::reset()
 {
