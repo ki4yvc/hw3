@@ -1,21 +1,32 @@
 #ifndef BIGINT_H
 #define BIGINT_H
 
-#include "node.h"
+#include <fstream.h>
 
-class List {
+class bigInt {
 public:
-    List();
-    ~List();
+	// Contructors
+    bigInt();
+    bigInt(int big);
+    ~bigInt();
 
-    void addFirst(void*);
-    void reset();
-    void* getCurItem();
-    Node* getHead();
+    // required operators
+    void readNumber(ifstream);
+    int size();
+    void printReverse();
+    void print()
+    bigInt* add(bigInt);
+    bigInt* operator+(bigInt);
+    bigInt* multiply(bigInt);
+
+    // List operators
+    void setNext(bigInt*);
+	bigInt* getItem();
+    bigInt* getNext();
 
 private:
-    Node* head;
-    Node* current;
+    int big;
+    bigInt* next;
 };
 
 #endif

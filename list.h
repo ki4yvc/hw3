@@ -1,21 +1,21 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include "node.h"
+#include "bigint.h"
 
 class List {
 public:
     List();
     ~List();
 
-    void addFirst(void*);
+    void addFirst(bigInt*);
     void reset();
-    void* getCurItem();
-    Node* getHead();
+    bigInt* getCurItem();
+    bigInt* getHead();
 
 private:
-    Node* head;
-    Node* current;
+    bigInt* head;
+    bigInt* current;
 };
 
 #endif

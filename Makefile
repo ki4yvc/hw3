@@ -2,20 +2,12 @@
 CC = g++
 CFLAGS = -g -Wall
 
-OBJS= shape.o\
-      circle.o\
-      rectangle.o\
-      rightTriangle.o\
-      main.o
+SRC = main.cpp list.cpp bigint.cpp
 
-INCS=shape.h rectangle.h circle.h rightTriangle.h
+TARGET = bigint
 
-lab10: ${OBJS}
-	@echo
-	@echo Linking $@
-	g++ -o $@ -Wall -g ${OBJS} -lm
-
-${OBJS}: ${INCS} Makefile
+all:
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
 
 clean:
-	rm -f *.o lab10 
+	rm -f *.o bigint

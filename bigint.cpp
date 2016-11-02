@@ -9,17 +9,19 @@
 
 bigInt::bigInt()
 {
-
+	big = 000;
+	next = NULL;
 }
 
-bigInt::bigInt(int n)
+bigInt::bigInt(int big2)
 {
-
+	big = big2;
+	next = NULL;
 }
 
 bigInt::bigInt(bigInt &big)
 {
-
+	
 }
 
 void bigInt::readNumber(ifstream &in)
@@ -53,6 +55,11 @@ bigInt* bigInt::operator+(bigInt &big2)
 }
 
 bigInt* bigInt::multiply(bigInt &big2)
+{
+
+}
+
+void setNext(bigInt &big2)
 {
 
 }

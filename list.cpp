@@ -23,10 +23,10 @@ List::List()
 List::~List()
 {
     if(head != NULL) {
-        Node* cur = head;
+        bigInt* cur = head;
         while(cur != NULL) {
             std::cout << "removing list item" << std::endl;
-            Node* tmp = cur->getNext();
+            bigInt* tmp = cur->getNext();
             delete cur;
             cur = tmp;
         }
@@ -34,17 +34,14 @@ List::~List()
 }
 
 /*
- * Add a new Node to the head of the list.
+ * Add a new bigInt to the head of the list.
  */
-void List::addFirst(void* obj)
+void List::addFirst(bigInt* big)
 {
-    Node* current = new Node(obj);
+    bigInt* current = new bigInt(big);
     current->setNext(head);
-    //node->next = list->head;
-
 
     head = current;
-    //list->head = node;
 
 }
 
@@ -57,9 +54,9 @@ void List::reset()
 }
 
 /*
- * Retruns the current Node's data.
+ * Retruns the current bigInt's data.
  */
-void* List::getCurItem()
+bigInt* List::getCurItem()
 {
     return current->getItem();
 }
@@ -67,7 +64,7 @@ void* List::getCurItem()
 /*
  * Returns the head.
  */
-Node* List::getHead()
+bigInt* List::getHead()
 {
     return head;
 }
