@@ -2,7 +2,8 @@
  * Name: Dylan Wilcox, Nicholas Gustafson
  * Date: November 3rd, 2016
  * File: bigint.cpp
- * Description:
+ * Description: This is the main manager class for the list
+
  */
 
 #include <iostream>
@@ -40,7 +41,7 @@ bigInt::bigInt(int n)
 
 bigInt::bigInt(const bigInt &big)
 {
-	List* list2 = new List();
+	
 }
 
 void bigInt::readNumber(ifstream &in)
@@ -99,9 +100,9 @@ void bigInt::print()
 
 bigInt bigInt::add(bigInt &big2)
 {
-	List* list2 = big2->getList();
+	List* list2 = big2.getList();
 	bigInt newBig = bigInt();
-	List newlist = newBig.getList();
+	List* newlist = newBig.getList();
 
 	list2->reset();
 	list->reset();
@@ -128,26 +129,7 @@ bigInt bigInt::operator+(bigInt &big2)
 
 bigInt bigInt::multiply(bigInt &big2)
 {
-	List* list2 = big2->getList();
-	bigInt newBig = bigInt();
-	List newlist = newBig.getList();
 
-	list2->reset();
-	list->reset();
-
-	while(list->getCurItem()->getNext() != NULL ||
-				list2->getCurItem()->getNext() != NULL) {
-		if(list->getCurItem() == NULL) {
-			newlist->addFirst(list2->getCurItem()->getNum());
-		} else if(list2->getCurItem() == NULL) {
-			newlist->addFirst(list->getCurItem()->getNum());
-		} else {
-			newlist->addFirst(list2->getCurItem()->getNum() *
-												list->getCurItem()->getNum());
-		}
-	}
-	while(checkOverFlow(newlist)!=0) {};
-	return newBig;
 }
 
 List* bigInt::getList() {
