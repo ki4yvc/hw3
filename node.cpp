@@ -16,7 +16,6 @@ Node::Node()
 {
 	num = 0;
 	next = NULL;
-	previous = NULL;
 }
 
 /*
@@ -44,14 +43,6 @@ Node::~Node()
 Node* Node::getNext()
 {
     return next;
-}
-
-Node* Node::getPrevious() {
-	return previous;
-}
-
-void Node::setPrevious(Node* n) {
-	previous = n;
 }
 
 /*

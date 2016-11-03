@@ -13,6 +13,8 @@
 #include <string>
 #include <cmath>
 
+using namespace std;
+
 bigInt::bigInt()
 {
 	list = new List();
@@ -34,23 +36,11 @@ bigInt::bigInt(int n)
 		count = 0;
 	}
 	list->addFirst(n);
-
-
-
-	// std::string s = to_string(n);
-	// while(s.length() >= 3) {
-	// 	list->addFirst(stoi(s.substr(s.length()-3)));
-	// 	s = s.substr(0, s.length()-3);
-	// }
-	// if(s.length() > 0) {
-	// 	list->addFirst(stoi(s));
-	// }
 }
 
 bigInt::bigInt(const bigInt &big)
 {
-	list = new List();
-
+	List* list2 = new List();
 }
 
 void bigInt::readNumber(ifstream &in)
@@ -60,13 +50,18 @@ void bigInt::readNumber(ifstream &in)
 
 int bigInt::size()
 {
-	return list->getSize();
+
 }
 
 void bigInt::printReverse()
 {
 	bool first = true;
-	int size = list->getSize();
+	int size = 0;
+	list->reset();
+	while(list->getCurItem()->getNext() != NULL) {
+		size++;
+		list->setCur(list->getCurItem()->getNext());
+	}
 	int count = 0;
 	int count2 = size;
 	int printNum = list->getCurItem()->getNum();
@@ -78,37 +73,23 @@ void bigInt::printReverse()
 		}
 		printNum = list->getCurItem()->getNum();
 		if(first || printNum > 99) {
-			std::cout << printNum << ",";
+			cout << printNum << ",";
 			first = false;
 		}else if(printNum > 9) {
-			std::cout << "0" << printNum << ",";
+			cout << "0" << printNum << " ";
 		}else {
-			std::cout << "00" << printNum << ",";
+			cout << "00" << printNum << " ";
 		}
 		count++;
 		count2 = size - count;
 	}
 	if(printNum > 99) {
-		std::cout << printNum;
+		cout << printNum << endl;
 	}else if(printNum > 9) {
-		std::cout << "0" << printNum;
+		cout << "0" << printNum << endl;
 	}else {
-		std::cout << "00" << printNum;
+		cout << "00" << printNum << endl;
 	}
-
-	// int first = list->getCurItem()->getNum();
-	// if(first <= 9) {
-	// 	std::cout << "00" << first << ",";
-	// } else if(first <= 99) {
-	// 	std::cout << "0" << first << ",";
-	// } else {
-	// 	std::cout << first << ",";
-	// }
-	// while(list->getCurItem() != NULL) {
-	// 	std::cout << list->getCurItem()->getNum() << ",";
-	// 	list->setCur(list->getCurItem()->getNext());
-	// }
-	// std::cout << std::endl;
 }
 
 void bigInt::print()
@@ -116,81 +97,68 @@ void bigInt::print()
 	printReverse();
 }
 
-bigInt* bigInt::add(bigInt &big2)
+bigInt bigInt::add(bigInt &big2)
 {
-	List list2 = big2->getList();
-	bigInt newBig = new bigInt();
-	List newlist = newBig->getList();
-	while(list->getCurItem()->getNext() != NULL &&
+	List* list2 = big2->getList();
+	bigInt newBig = bigInt();
+	List newlist = newBig.getList();
+
+	list2->reset();
+	list->reset();
+
+	while(list->getCurItem()->getNext() != NULL ||
 				list2->getCurItem()->getNext() != NULL) {
-		list->setCur(list->getCurItem()->getNext());
-		list2->setCur(list2->getCurItem()->getNext());
+		if(list->getCurItem() == NULL) {
+			newlist->addFirst(list2->getCurItem()->getNum());
+		} else if(list2->getCurItem() == NULL) {
+			newlist->addFirst(list->getCurItem()->getNum());
+		} else {
+			newlist->addFirst(list2->getCurItem()->getNum() +
+												list->getCurItem()->getNum());
+		}
 	}
-
-	if(list->getCurItem() != list->getTail()) {
-		First(newlist);
-	} else if(list2->getCurItem() != list2->getTail()) {
-		First(list2, newlist);
-	}
-
-	while(list->getCurItem()->getPrevious() != NULL &&
-				list2->getCurItem()->getPrevious() != NULL) {
-		newlist.addFirst(list->getCurItem()->getNum() +
-											list2->getCurItem()->getNum());
-		list->setCur(list->getCurItem()->getPrevious());
-		list2->setCur(list2->getCurItem()->getPrevious());
-	}
-
-	while(checkOverFlow(newlist) != 0) { }
-
-	return newlist;
+	while(checkOverFlow(newlist)!=0) {};
+	return newBig;
 }
 
-bigInt* bigInt::operator+(bigInt &big2)
+bigInt bigInt::operator+(bigInt &big2)
 {
-
+	return add(big2);
 }
 
-bigInt* bigInt::multiply(bigInt &big2)
+bigInt bigInt::multiply(bigInt &big2)
 {
+	List* list2 = big2->getList();
+	bigInt newBig = bigInt();
+	List newlist = newBig.getList();
 
+	list2->reset();
+	list->reset();
+
+	while(list->getCurItem()->getNext() != NULL ||
+				list2->getCurItem()->getNext() != NULL) {
+		if(list->getCurItem() == NULL) {
+			newlist->addFirst(list2->getCurItem()->getNum());
+		} else if(list2->getCurItem() == NULL) {
+			newlist->addFirst(list->getCurItem()->getNum());
+		} else {
+			newlist->addFirst(list2->getCurItem()->getNum() *
+												list->getCurItem()->getNum());
+		}
+	}
+	while(checkOverFlow(newlist)!=0) {};
+	return newBig;
 }
 
 List* bigInt::getList() {
 	return list;
 }
 
-void bigInt::First(List* newlist) {
-	int count = 0;
-	while(list->getCurItem()->getNext() != NULL) {
-		count++;
-	}
-
-	while(count > 0) {
-		newlist->addFirst(list->getCurItem()->getNum());
-		count--;
-		list->setCur(list->getCurItem()->previous());
-	}
-}
-
-void bigInt::First(List* list2, List* newlist) {
-	int count = 0;
-	while(list2->getCurItem()->getNext() != NULL) {
-		count++;
-	}
-
-	while(count > 0) {
-		newlist->addFirst(list2->getCurItem()->getNum());
-		count--;
-		list2->setCur(list2->getCurItem()->previous());
-	}
-}
-
 int bigInt::checkOverFlow(List* newlist){
 	int count = 0;
 	int temp = 0;
 	newlist->reset();
-	while(newlist->getCurItem()->getNext()) {
+	while(newlist->getCurItem()->getNext() != NULL) {
 		if(newlist->getCurItem()->getNum() > 999) {
 			temp = newlist->getCurItem()->getNum()/1000;
 			newlist->getCurItem()->getNext()->setNum(
@@ -199,6 +167,7 @@ int bigInt::checkOverFlow(List* newlist){
 					newlist->getCurItem()->getNum() - (temp*1000));
 			count++;
 		}
+		newlist->setCur(newlist->getCurItem()->getNext());
 	}
 	return count;
 }

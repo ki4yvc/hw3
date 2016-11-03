@@ -15,9 +15,7 @@
 List::List()
 {
 	head = NULL;
-  tail = NULL;
 	current = head;
-  size = 0;
 }
 
 /*
@@ -45,31 +43,8 @@ void List::addFirst(int num)
 {
 	Node *node = new Node(num);
 	node->setNext(head);
-  if(size != 0) {
-    head->setPrevious(node);
-  } else {
-    tail = node;
-  }
 	head = node;
 	current = head;
-  size++;
-}
-
-void List::addLast(int num) {
-  Node *node = new Node(num);
-  if(size == 0) {
-    tail = node;
-    head = node;
-  } else {
-    tail->setNext(node);
-    node->setPrevious(tail);
-    tail = node;
-  }
-  size++;
-}
-
-int List::getSize() {
-  return size;
 }
 
 /*
@@ -99,8 +74,4 @@ void List::setCur(Node* node) {
 Node* List::getHead()
 {
     return head;
-}
-
-Node* List::getTail() {
-  return tail;
 }
