@@ -1,8 +1,8 @@
 /*
- * Name: Dylan Wilcox Nicholas Gustafson
- * Date: 3 November 2016
+ * Name:
+ * Date:
  * File: list.cpp
- * Description: Contains all the opertions for our list
+ * Description
  */
 #include "list.h"
 #include <iostream>
@@ -10,23 +10,27 @@
 
 /*
  * Default List constructor.
+ * Hint: set member variables to NULL.
  */
 List::List()
 {
-    head = NULL;
-    current = NULL;
+	head = NULL;
+  tail = NULL;
+	current = head;
+  size = 0;
 }
 
 /*
  * Destructor for the List.
+ * This has already been implemented.
  */
 List::~List()
 {
     if(head != NULL) {
-        bigInt* cur = head;
+        Node* cur = head;
         while(cur != NULL) {
             std::cout << "removing list item" << std::endl;
-            bigInt* tmp = cur->getNext();
+            Node* tmp = cur->getNext();
             delete cur;
             cur = tmp;
         }
@@ -34,37 +38,69 @@ List::~List()
 }
 
 /*
- * Add a new bigInt to the head of the list.
+ * Add a new Node to the head of the list.
+ * Hint: same concept as the C version.
  */
-void List::addFirst(bigInt* big)
+void List::addFirst(int num)
 {
-    bigInt* current = new bigInt(big);
-    current->setNext(head);
+	Node *node = new Node(num);
+	node->setNext(head);
+  if(size != 0) {
+    head->setPrevious(node);
+  } else {
+    tail = node;
+  }
+	head = node;
+	current = head;
+  size++;
+}
 
-    head = current;
+void List::addLast(int num) {
+  Node *node = new Node(num);
+  if(size == 0) {
+    tail = node;
+    head = node;
+  } else {
+    tail->setNext(node);
+    node->setPrevious(tail);
+    tail = node;
+  }
+  size++;
+}
 
+int List::getSize() {
+  return size;
 }
 
 /*
  * Resets the current to the head.
+ * Hint: same concept as the C version.
  */
 void List::reset()
 {
-    current = head;
+	current = head;
 }
 
 /*
- * Retruns the current bigInt's data.
+ * Retruns the current Node's data.
  */
-bigInt* List::getCurItem()
+Node* List::getCurItem()
 {
-    return current->getItem();
+    return current;
+}
+
+void List::setCur(Node* node) {
+  current = node;
 }
 
 /*
  * Returns the head.
  */
-bigInt* List::getHead()
+Node* List::getHead()
 {
     return head;
+}
+
+Node* List::getTail() {
+  return tail;
 }

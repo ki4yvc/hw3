@@ -2,12 +2,20 @@
 CC = g++
 CFLAGS = -g -Wall
 
-SRC = main.cpp list.cpp bigint.cpp
+OBJS = node.o\
+			 list.o\
+			 bigint.o\
+			 main.o
 
-TARGET = bigint
 
-all:
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+INCS = node.h list.h bigint.h
+
+bigint: ${OBJS}
+	@echo
+	@echo Linking $@
+	g++ -o $@ -Wall -g ${OBJS} -lm
+
+${OBJS}: ${INCS} Makefile
 
 clean:
 	rm -f *.o bigint

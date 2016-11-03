@@ -1,7 +1,14 @@
 #ifndef BIGINT_H
 #define BIGINT_H
 
-#include <fstream.h>
+#include <iostream>
+#include <cstring>
+#include "bigint.h"
+#include "list.h"
+#include <fstream>
+#include <string>
+#include <cmath>
+
 
 class bigInt {
 public:
@@ -14,19 +21,14 @@ public:
     void readNumber(ifstream);
     int size();
     void printReverse();
-    void print()
+    void print();
     bigInt* add(bigInt);
     bigInt* operator+(bigInt);
     bigInt* multiply(bigInt);
-
-    // List operators
-    void setNext(bigInt*);
-	bigInt* getItem();
-    bigInt* getNext();
+    List* getList();
 
 private:
-    int big;
-    bigInt* next;
+    List* list;
 };
 
 #endif
