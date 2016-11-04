@@ -24,12 +24,12 @@ public:
     // required operators
     void readNumber(ifstream&);
     int size();
-    void printReverse();
+    void printReverse(Iterator*);
     void print();
     bigInt add(const bigInt&);
     bigInt operator+(const bigInt&);
     bigInt multiply(bigInt&);
-    List* getList();
+    List* getList() const;
     int checkOverFlow(List*);
 
 private:

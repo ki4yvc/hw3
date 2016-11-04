@@ -28,7 +28,7 @@ bigInt::bigInt()
  *
  */
 bigInt::bigInt(int n)
-{
+{	
 	list = new List();
 	
 	int temp;
@@ -47,7 +47,11 @@ bigInt::bigInt(int n)
 
 bigInt::bigInt(const bigInt &big)
 {
-	
+	list = new List();
+	iter = new Iterator(this->getList());
+	while(iter->hasNext()) {
+		list->addFirst(iter->get()->getNum());                          
+	}
 }
 
 bigInt::~bigInt()
@@ -64,7 +68,7 @@ void bigInt::readNumber(ifstream &in)
 
 }
 
-int bigInt::size()
+int bigInt::size() 
 {
 	int size = 0;
 	iter = new Iterator(list);
@@ -74,8 +78,34 @@ int bigInt::size()
 	return size;
 }
 
-void bigInt::printReverse()
-{
+void bigInt::printReverse(Iterator *iter)
+{	
+	static bool first = true;
+	int num;
+
+	if (!iter->hasNext())
+	{
+		return;
+	}
+	if (first)
+	{
+		first = false;
+	}
+	num = iter->get()->getNum();
+	iter->advance();
+	printReverse(iter);
+	if(!first && num < 9) {
+		cout << "00" << num ;
+	} else if (!first && num < 99) {
+		cout << "0" << num;
+	} else {
+		cout << num;
+	}
+	first = false;
+}
+
+
+/*
 	iter = new Iterator(list);
 	int temp;
 	bool first = true;
@@ -95,61 +125,70 @@ void bigInt::printReverse()
 		iter->advance();                             
 	}
 	cout<<endl;
-}
+	*/
+
 
 void bigInt::print()
-{
-	printReverse();
+{	
+	iter = new Iterator(list);
+	printReverse(iter);
 }
 
-bigInt bigInt::add(const bigInt &big2)
+bigInt bigInt::add(const bigInt& big2)
 {	
-	//bigInt big;
-	int carry = 0;
+	bigInt* ret = new bigInt();
+	int remainder = 0;
 	iter = new Iterator(list);
-	Iterator* iter2 = new Iterator(this->getList());
+	Iterator* iter2 = new Iterator(big2.getList());
 
-	while(iter->hasNext() && iter2->hasNext()) {
-		int num1 = iter->get()->getNum();
-		int num2 = iter->get()->getNum();
+	//int listSize = list->size();
+	//int list2Size = big2->size();
+	while(iter->hasNext() || iter2->hasNext()) {
 
-		int result = num1 + num2 + carry;
+		int num1, num2, result;
+
+		if (iter->hasNext() && iter2->hasNext()/* && listSize == list2Size*/)
+		{
+			num1 = iter->get()->getNum();
+			num2 = iter2->get()->getNum();
+			cout << "num1 = " << num1 << endl;
+			cout << "num2 = " << num2 << endl;
+			result = num1 + num2 + remainder;
+
+			//listSize--;
+			//list2Size--;
+
+			iter->advance();
+			iter2->advance();  
+		}
+		else if (iter->hasNext())
+		{
+			result = iter->get()->getNum() + remainder;
+			iter->advance();
+			//listSize--;
+		}
+		else
+		{
+			result = iter2->get()->getNum() + remainder;
+			iter2->advance();
+			//list2Size--;  
+		}
 
 		if(result >= 1000) {
 			result -= 1000;
-			carry = 1;
+			remainder = 1;
 		} else {
-			carry = 0;
+			remainder = 0;
 		}
-		this->getList()->addFirst(result);
-		iter->advance();
-		iter2->advance();               
+		cout << "Result = " << result << endl;
+		ret->getList()->addFirst(result);
 	}
-	return *this;	
-	/*List* list2 = big2.getList();
-	bigInt newBig = bigInt();
-	List* newlist = newBig.getList();
+	ret->print();     
 
-	list2->reset();
-	list->reset();
-
-	while(list->getCurItem()->getNext() != NULL ||
-				list2->getCurItem()->getNext() != NULL) {
-		if(list->getCurItem() == NULL) {
-			newlist->addFirst(list2->getCurItem()->getNum());
-		} else if(list2->getCurItem() == NULL) {
-			newlist->addFirst(list->getCurItem()->getNum());
-		} else {
-			newlist->addFirst(list2->getCurItem()->getNum() +
-												list->getCurItem()->getNum());
-		}
-	}
-	while(checkOverFlow(newlist)!=0) {};
-	return newBig;
-	*/
+	return *ret;	
 }
 
-bigInt bigInt::operator+(const bigInt &big2)
+bigInt bigInt::operator+(const bigInt& big2)
 {
 	return add(big2);
 }
@@ -159,7 +198,7 @@ bigInt bigInt::multiply(bigInt &big2)
 
 }
 
-List* bigInt::getList() {
+List* bigInt::getList() const{
 	return list;
 }
 
