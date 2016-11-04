@@ -11,14 +11,15 @@ int main()
 {
 	//makebigInt* big = new bigInt();
 	bigInt* big2 = new bigInt(23);
-	bigInt big3(1000933);
-	bigInt* big4 = new bigInt(1234);
-	bigInt big5(12312789);
+	bigInt big3(245454);
+	//bigInt* big4 = new bigInt(1234);
+	bigInt big5(245754);
 
 	big3.print();
-
 	cout << endl;
 	big5.print();
+
+	//big5.print();
 
 	cout << endl;
 	bigInt big6(big3 + big5);

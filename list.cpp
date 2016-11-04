@@ -47,6 +47,26 @@ void List::addFirst(int num)
 	current = head;
 }
 
+void List::addLast(int num)
+{
+    Node *node = new Node(num);
+    node->setNext(NULL);
+    if(!head)
+    {
+        head = node;
+        return;
+    }
+    else
+    {
+        current = head; 
+        while(current->getNext() != NULL)
+        {
+            current = current->getNext();
+        }
+        current->setNext(node);
+    }
+    //current = head;
+}
 /*
  * Resets the current to the head.
  * Hint: same concept as the C version.

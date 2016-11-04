@@ -18,7 +18,6 @@ public:
 	// Contructors
     bigInt();
     bigInt(int big);
-    ~bigInt();
     bigInt(const bigInt&);
 
     // required operators

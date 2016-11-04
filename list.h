@@ -9,6 +9,7 @@ public:
     ~List();
 
     void addFirst(int);
+    void addLast(int);
     void reset();
     Node* getCurItem();
     void setCur(Node *);
