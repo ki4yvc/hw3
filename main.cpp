@@ -15,9 +15,10 @@ int main()
 	bigInt* big4 = new bigInt(1234);
 	bigInt* big5 = new bigInt(123456789);
 
-	//bigInt big6(big3 + big5);
-	big2->printReverse();
-	big3->printReverse();
-	big4->printReverse();
-	big5->printReverse();
+	bigInt big6(&big3 + &big5);
+	//big2->printReverse();
+	//big3->printReverse();
+	//big4->printReverse();
+	//big5->printReverse();
+	big6.print();
 }

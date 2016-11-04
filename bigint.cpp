@@ -15,41 +15,35 @@
 #include <cmath>
 
 using namespace std;
-
+/*
+ *  Deafault Constructor
+ *  Initializes only an empty list
+ */
 bigInt::bigInt()
 {
 	list = new List();
 }
 
+/*
+ *
+ */
 bigInt::bigInt(int n)
 {
 	list = new List();
 	
 	int temp;
+	// We break down the number into individual pieces, we accomplish this
+	// by finding mod 1000 first, which finds the first 3 digits then we 
+	// advance by removing 3 peices by dividing by 1000. we can then store
+	// temp in array list
 	while(n > 0)
 	{                
 		temp = n%1000;
 		n /= 1000; 
-//		cout << temp << endl;                             
 		list->addFirst(temp);
 	}
-	/*
-	int test = n;
-	int count = 0;
-	while(n > 999) {
-		while(test > 999) {
-			test = test/1000;
-			count++;
-		}
-		list->addFirst(test);
-		n = n - test*pow(1000,count);
-		test = n;
-		count = 0;
-	}
-			cout << n << endl;                             
-
-	list->addFirst(n);*/
 }
+
 
 bigInt::bigInt(const bigInt &big)
 {
@@ -77,54 +71,30 @@ int bigInt::size()
 	while(iter->hasNext()) {
 		size++;                           
 	}
+	return size;
 }
 
 void bigInt::printReverse()
 {
 	iter = new Iterator(list);
 	int temp;
+	bool first = true;
+	// While we get each value, check to see if there are any leading
+	// 0's that need to be printed. None are printed if its the first
+	// iteration becasue its not needed.
 	while(iter->hasNext()) {
-		cout << iter->get()->getNum();
+		temp = iter->get()->getNum();
+		if(!first && temp < 9) {
+			cout << "00" << temp ;
+		} else if (!first && temp < 99) {
+			cout << "0" << temp;
+		} else {
+			cout << temp;
+		}
+		first = false;
 		iter->advance();                             
 	}
 	cout<<endl;
-/*
-	bool first = true;
-	int size = 0;
-	list->reset();
-	while(list->getCurItem()->getNext() != NULL) {
-		size++;
-		list->setCur(list->getCurItem()->getNext());
-	}
-	int count = 0;
-	int count2 = size;
-	int printNum = list->getCurItem()->getNum();
-	while(count2 != 1) {
-		list->reset();
-		while(count2 != 1) {
-			list->setCur(list->getCurItem()->getNext());
-			count2--;
-		}
-		printNum = list->getCurItem()->getNum();
-		if(first || printNum > 99) {
-			cout << printNum << ",";
-			first = false;
-		}else if(printNum > 9) {
-			cout << "0" << printNum << " ";
-		}else {
-			cout << "00" << printNum << " ";
-		}
-		count++;
-		count2 = size - count;
-	}
-	if(printNum > 99) {
-		cout << printNum << endl;
-	}else if(printNum > 9) {
-		cout << "0" << printNum << endl;
-	}else {
-		cout << "00" << printNum << endl;
-	}
-	*/
 }
 
 void bigInt::print()
@@ -134,12 +104,28 @@ void bigInt::print()
 
 bigInt bigInt::add(const bigInt &big2)
 {	
-	int temp;
+	//bigInt big;
+	int carry = 0;
 	iter = new Iterator(list);
+	Iterator* iter2 = new Iterator(this->getList());
 
-	while(iter->hasNext()) {
-		iter->advance();                             
-	}	
+	while(iter->hasNext() && iter2->hasNext()) {
+		int num1 = iter->get()->getNum();
+		int num2 = iter->get()->getNum();
+
+		int result = num1 + num2 + carry;
+
+		if(result >= 1000) {
+			result -= 1000;
+			carry = 1;
+		} else {
+			carry = 0;
+		}
+		this->getList()->addFirst(result);
+		iter->advance();
+		iter2->advance();               
+	}
+	return *this;	
 	/*List* list2 = big2.getList();
 	bigInt newBig = bigInt();
 	List* newlist = newBig.getList();
@@ -177,7 +163,7 @@ List* bigInt::getList() {
 	return list;
 }
 
-int bigInt::checkOverFlow(List* newlist){
+/*int bigInt::checkOverFlow(List* newlist){
 	int count = 0;
 	int temp = 0;
 	newlist->reset();
@@ -193,4 +179,4 @@ int bigInt::checkOverFlow(List* newlist){
 		newlist->setCur(newlist->getCurItem()->getNext());
 	}
 	return count;
-}
+}*/
