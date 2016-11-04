@@ -35,6 +35,7 @@ public:
 private:
     List* list;
     Iterator* iter;
+    bool first;
 };
 
 #endif

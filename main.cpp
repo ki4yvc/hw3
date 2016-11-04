@@ -15,11 +15,9 @@ int main()
 	bigInt* big4 = new bigInt(1234);
 	bigInt big5(12312789);
 
-	//big2->printReverse();
 	big3.print();
 
 	cout << endl;
-	//big4->printReverse();
 	big5.print();
 
 	cout << endl;

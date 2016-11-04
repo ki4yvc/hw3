@@ -13,6 +13,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <cstdlib>
 
 using namespace std;
 /*
@@ -22,25 +23,23 @@ using namespace std;
 bigInt::bigInt()
 {
 	list = new List();
+	first = true;
 }
 
 /*
  *
  */
 bigInt::bigInt(int n)
-{	
+{
 	list = new List();
-	
-	int temp;
 	// We break down the number into individual pieces, we accomplish this
-	// by finding mod 1000 first, which finds the first 3 digits then we 
+	// by finding mod 1000 first, which finds the first 3 digits then we
 	// advance by removing 3 peices by dividing by 1000. we can then store
 	// temp in array list
 	while(n > 0)
-	{                
-		temp = n%1000;
-		n /= 1000; 
-		list->addFirst(temp);
+	{
+		list->addFirst(n%1000);
+		n = n/1000;
 	}
 }
 
@@ -49,60 +48,103 @@ bigInt::bigInt(const bigInt &big)
 {
 	list = new List();
 	iter = new Iterator(this->getList());
+	Iterator* newiter = new Iterator(list);
 	while(iter->hasNext()) {
-		list->addFirst(iter->get()->getNum());                          
+		Node* node = new Node(iter->get()->getNum());
+		newiter->get()->setNext(node);
+		iter->advance();
+		newiter->advance();
 	}
 }
 
-bigInt::~bigInt()
-{
-
-}
-
 /*
- * Reads a string of digits from a given 
+ * Reads a string of digits from a given
  * input stream
  */
 void bigInt::readNumber(ifstream &in)
 {
+	string result;
+	int i = 0;
 
+	iter = new Iterator(list);
+
+	string line;
+	while (getline(in, line))
+		result += line;
+
+	while(result.length()>i+3) {
+		Node* node = new Node(atoi(result.substr(i, i+3)));
+		iter->get()->setNext(node);
+		iter->advance();
+		i+=3;
+	}
+	if(i < result.length()) {
+		Node* node = new Node(atoi(result.substr(i)));
+		iter->get()->setNext(node);
+	}
 }
 
-int bigInt::size() 
+int bigInt::size()
 {
 	int size = 0;
 	iter = new Iterator(list);
 	while(iter->hasNext()) {
-		size++;                           
+		size++;
+		iter->advance();
 	}
 	return size;
 }
 
 void bigInt::printReverse(Iterator *iter)
-{	
-	static bool first = true;
-	int num;
+{
+	int count, countholder;
+	while(iter->hasNext()) {
+		iter->advance();
+		count++;
+	}
+	countholder = count;
+	cout << iter->get()->getNum() << " ";
 
-	if (!iter->hasNext())
-	{
-		return;
+	while(countholder > 0) {
+		iter->reset();
+		while(count > 0) {
+			iter->advance();
+			count--;
+		}
+		num = iter->get()->getNum();
+		if(num < 9) {
+			cout << "00" << num ;
+		} else if (!first && num < 99) {
+			cout << "0" << num;
+		} else {
+			cout << num;
+		}
+		countholder--;
 	}
-	if (first)
-	{
-		first = false;
-	}
-	num = iter->get()->getNum();
-	iter->advance();
-	printReverse(iter);
-	if(!first && num < 9) {
-		cout << "00" << num ;
-	} else if (!first && num < 99) {
-		cout << "0" << num;
-	} else {
-		cout << num;
-	}
-	first = false;
-}
+
+
+// 	int num;
+//
+// 	if (!iter->hasNext())
+// 	{
+// 		return;
+// 	}
+// 	if (first)
+// 	{
+// 		first = false;
+// 	}
+// 	num = iter->get()->getNum();
+// 	iter->advance();
+// 	printReverse(iter);
+// 	if(!first && num < 9) {
+// 		cout << "00" << num ;
+// 	} else if (!first && num < 99) {
+// 		cout << "0" << num;
+// 	} else {
+// 		cout << num;
+// 	}
+// 	first = false;
+// }
 
 
 /*
@@ -122,20 +164,20 @@ void bigInt::printReverse(Iterator *iter)
 			cout << temp;
 		}
 		first = false;
-		iter->advance();                             
+		iter->advance();
 	}
 	cout<<endl;
 	*/
 
 
 void bigInt::print()
-{	
+{
 	iter = new Iterator(list);
 	printReverse(iter);
 }
 
 bigInt bigInt::add(const bigInt& big2)
-{	
+{
 	bigInt* ret = new bigInt();
 	int remainder = 0;
 	iter = new Iterator(list);
@@ -159,7 +201,7 @@ bigInt bigInt::add(const bigInt& big2)
 			//list2Size--;
 
 			iter->advance();
-			iter2->advance();  
+			iter2->advance();
 		}
 		else if (iter->hasNext())
 		{
@@ -171,21 +213,22 @@ bigInt bigInt::add(const bigInt& big2)
 		{
 			result = iter2->get()->getNum() + remainder;
 			iter2->advance();
-			//list2Size--;  
+			//list2Size--;
 		}
 
-		if(result >= 1000) {
-			result -= 1000;
-			remainder = 1;
-		} else {
-			remainder = 0;
-		}
+		// if(result >= 1000) {
+		// 	result -= 1000;
+		// 	remainder = 1;
+		// } else {
+		// 	remainder = 0;
+		// }
 		cout << "Result = " << result << endl;
 		ret->getList()->addFirst(result);
 	}
-	ret->print();     
+	while(checkOverFlow(ret->getList()) != 0) {}
+	ret->print();
 
-	return *ret;	
+	return *ret;
 }
 
 bigInt bigInt::operator+(const bigInt& big2)
@@ -202,20 +245,21 @@ List* bigInt::getList() const{
 	return list;
 }
 
-/*int bigInt::checkOverFlow(List* newlist){
+int bigInt::checkOverFlow(List* newlist){
 	int count = 0;
-	int temp = 0;
-	newlist->reset();
-	while(newlist->getCurItem()->getNext() != NULL) {
-		if(newlist->getCurItem()->getNum() > 999) {
-			temp = newlist->getCurItem()->getNum()/1000;
-			newlist->getCurItem()->getNext()->setNum(
-					newlist->getCurItem()->getNext()->getNum() + temp);
-			newlist->getCurItem()->setNum(
-					newlist->getCurItem()->getNum() - (temp*1000));
+	Iterator* iter = new Iterator(newlist);
+	while(iter->hasNext()) {
+		if(iter->get()->getNum() > 999) {
+			iter->get()->setNum(iter->get()->getNum() - 1000);
+			iter->advance();
+			iter->get()->setNum(iter->get()->getNum() + 1);
 			count++;
 		}
-		newlist->setCur(newlist->getCurItem()->getNext());
+	}
+	if(iter->get()->getNum() > 999) {
+		iter->get()->setNum(iter->get()->getNum() - 1000);
+		Node* newNode = new Node(1);
+		iter->get()->setNext(newNode);
 	}
 	return count;
-}*/
+}

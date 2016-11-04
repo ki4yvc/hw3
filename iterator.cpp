@@ -49,7 +49,7 @@ bool Iterator::hasNext()
     if(current)
     {
     	return true;
-    } 
+    }
     else
     {
     	return false;
@@ -62,4 +62,8 @@ bool Iterator::hasNext()
 Node* Iterator::get()
 {
     return current;
+}
+
+void Iterator::reset() {
+	current = list->getHead();
 }

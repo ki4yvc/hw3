@@ -13,6 +13,7 @@ public:
     void advance();
     bool hasNext();
     Node* get();
+    void reset();
 
 private:
     List* list;
