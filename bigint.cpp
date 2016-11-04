@@ -24,6 +24,16 @@ bigInt::bigInt()
 bigInt::bigInt(int n)
 {
 	list = new List();
+	
+	int temp;
+	while(n > 0)
+	{                
+		temp = n%1000;
+		n /= 1000; 
+//		cout << temp << endl;                             
+		list->addFirst(temp);
+	}
+	/*
 	int test = n;
 	int count = 0;
 	while(n > 999) {
@@ -36,7 +46,9 @@ bigInt::bigInt(int n)
 		test = n;
 		count = 0;
 	}
-	list->addFirst(n);
+			cout << n << endl;                             
+
+	list->addFirst(n);*/
 }
 
 bigInt::bigInt(const bigInt &big)
@@ -44,6 +56,15 @@ bigInt::bigInt(const bigInt &big)
 	
 }
 
+bigInt::~bigInt()
+{
+
+}
+
+/*
+ * Reads a string of digits from a given 
+ * input stream
+ */
 void bigInt::readNumber(ifstream &in)
 {
 
@@ -51,11 +72,23 @@ void bigInt::readNumber(ifstream &in)
 
 int bigInt::size()
 {
-
+	int size = 0;
+	iter = new Iterator(list);
+	while(iter->hasNext()) {
+		size++;                           
+	}
 }
 
 void bigInt::printReverse()
 {
+	iter = new Iterator(list);
+	int temp;
+	while(iter->hasNext()) {
+		cout << iter->get()->getNum();
+		iter->advance();                             
+	}
+	cout<<endl;
+/*
 	bool first = true;
 	int size = 0;
 	list->reset();
@@ -91,6 +124,7 @@ void bigInt::printReverse()
 	}else {
 		cout << "00" << printNum << endl;
 	}
+	*/
 }
 
 void bigInt::print()
@@ -98,9 +132,15 @@ void bigInt::print()
 	printReverse();
 }
 
-bigInt bigInt::add(bigInt &big2)
-{
-	List* list2 = big2.getList();
+bigInt bigInt::add(const bigInt &big2)
+{	
+	int temp;
+	iter = new Iterator(list);
+
+	while(iter->hasNext()) {
+		iter->advance();                             
+	}	
+	/*List* list2 = big2.getList();
 	bigInt newBig = bigInt();
 	List* newlist = newBig.getList();
 
@@ -120,9 +160,10 @@ bigInt bigInt::add(bigInt &big2)
 	}
 	while(checkOverFlow(newlist)!=0) {};
 	return newBig;
+	*/
 }
 
-bigInt bigInt::operator+(bigInt &big2)
+bigInt bigInt::operator+(const bigInt &big2)
 {
 	return add(big2);
 }

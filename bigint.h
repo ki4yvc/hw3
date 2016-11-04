@@ -5,6 +5,7 @@
 #include <cstring>
 #include "bigint.h"
 #include "list.h"
+#include "iterator.h"
 #include <fstream>
 #include <string>
 #include <cmath>
@@ -25,15 +26,15 @@ public:
     int size();
     void printReverse();
     void print();
-    bigInt add(bigInt&);
-    bigInt operator+(bigInt&);
+    bigInt add(const bigInt&);
+    bigInt operator+(const bigInt&);
     bigInt multiply(bigInt&);
     List* getList();
     int checkOverFlow(List*);
 
 private:
     List* list;
-
+    Iterator* iter;
 };
 
 #endif

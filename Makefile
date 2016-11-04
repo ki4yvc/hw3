@@ -5,10 +5,11 @@ CFLAGS = -g -Wall
 OBJS = node.o\
 			 list.o\
 			 bigint.o\
+			 iterator.o\
 			 main.o
 
 
-INCS = node.h list.h bigint.h
+INCS = node.h list.h bigint.h iterator.h
 
 bigint: ${OBJS}
 	@echo
