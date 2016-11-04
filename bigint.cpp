@@ -14,6 +14,8 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
+#include<sstream>
+
 
 using namespace std;
 /*
@@ -58,26 +60,18 @@ bigInt::bigInt(const bigInt &big)
  */
 void bigInt::readNumber(ifstream &in)
 {
-	/*
-	string result;
+	string result; //string to have all the ints
 	int i = 0;
-
-	iter = new Iterator(list);
-
 	string line;
 	while (getline(in, line))
 		result += line;
-
 	while(result.length()>i+3) {
-		Node* node = new Node(atoi(result.substr(i, i+3)));
-		iter->get()->setNext(node);
-		iter->advance();
+		list->addFirst(atoi((result.substr(i,i+3).c_str())));
 		i+=3;
 	}
-	if(i < result.length()) {
-		Node* node = new Node(atoi(result.substr(i)));
-		iter->get()->setNext(node);
-	}*/
+	if(i+3 < result.length()) {
+		list->addFirst(atoi((result.substr(i).c_str())));
+	}
 }
 
 int bigInt::size()
@@ -94,7 +88,7 @@ int bigInt::size()
 void bigInt::printReverse(Iterator *iter)
 {
  	int num;
- 	bool first = false;
+ 	first = false;
  	if (!iter->hasNext())
  	{
  		return;
@@ -120,14 +114,14 @@ void bigInt::print()
 }
 
 bigInt bigInt::add(const bigInt& big2)
-{	
+{
 	bigInt ret;
 	int remainder = 0;
 	int result = 0;
 	iter = new Iterator(list);
 	Iterator* iter2 = new Iterator(big2.getList());
 
-	while(iter->hasNext() || iter2->hasNext()) 
+	while(iter->hasNext() || iter2->hasNext())
 	{
 	 	if(iter->hasNext() && iter2->hasNext())
 	 	{
@@ -159,7 +153,7 @@ bigInt bigInt::add(const bigInt& big2)
 	 	else{remainder=0;}
 
 	 	cout << "Result " << result << endl;
-	 	ret.getList()->addLast(result);	
+	 	ret.getList()->addLast(result);
 	 }
 
 	 if (remainder)
@@ -170,7 +164,7 @@ bigInt bigInt::add(const bigInt& big2)
 	 	{
 	 		temp += remainder;
 	 		ret.getList()->getCurItem()->setNum(0);
-	 		ret.getList()->addLast(1);	
+	 		ret.getList()->addLast(1);
 	 	}
 	 	else
 	 	{
@@ -178,7 +172,7 @@ bigInt bigInt::add(const bigInt& big2)
 	 		ret.getList()->getCurItem()->setNum(temp);
 	 	}
 	 }
-	 return ret;	
+	 return ret;
 
 }
 

@@ -6,6 +6,9 @@
  */
 #include <iostream>
 #include "bigint.h"
+#include <fstream>
+#include <cstdlib>
+
 
 int main()
 {
@@ -24,5 +27,17 @@ int main()
 	cout << endl;
 	bigInt big6(big3 + big5);
 	big6.print();
+
+	cout << endl;
+
+
+
+	bigInt* big = new bigInt();
+	ifstream in;
+	in.open("input.txt");
+	big->readNumber(in);
+	big->print();
+
+	cout<<endl;
 
 }
