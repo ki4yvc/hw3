@@ -127,51 +127,34 @@ bigInt bigInt::add(const bigInt& big2)
 	 	{
 	 		result = iter->get()->getNum() + iter2->get()->getNum()
 	 				 + remainder;
-	 		cout << "iter " << iter->get()->getNum() << endl;
-	 		cout << "iter2 " << iter2->get()->getNum() << endl;
 	 		iter->advance();
 	 		iter2->advance();
 	 	}
 		else if(iter->hasNext())
 	 	{
 	 		result = iter->get()->getNum() + remainder;
-	 		cout << "iter " << iter->get()->getNum() << endl;
 	 		iter->advance();
 	 	}
 	 	else
 	 	{
 	 		result = iter2->get()->getNum() + remainder;
-	 		cout << "iter2 " << iter2->get()->getNum() << endl;
 	 		iter2->advance();
 	 	}
 
 	 	if (result > 1000) {
-	 		cout << "Result Before" << result << endl;
 	 		result -= 1000;
 	 		remainder = 1;
 	 	}
 	 	else{remainder=0;}
-
-	 	cout << "Result " << result << endl;
 	 	ret.getList()->addLast(result);
 	 }
 
+	 // if there is still a 1 that needs to be careied over, do it
 	 if (remainder)
 	 {
-	 	int temp;
-	 	temp = ret.getList()->getCurItem()->getNum();
-	 	if (temp = 999)
-	 	{
-	 		temp += remainder;
-	 		ret.getList()->getCurItem()->setNum(0);
-	 		ret.getList()->addLast(1);
-	 	}
-	 	else
-	 	{
-	 		temp += remainder;
-	 		ret.getList()->getCurItem()->setNum(temp);
-	 	}
+	 	ret.getList()->addLast(1);
 	 }
+
 	 return ret;
 
 }
