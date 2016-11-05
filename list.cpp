@@ -27,7 +27,6 @@ List::~List()
     if(head != NULL) {
         Node* cur = head;
         while(cur != NULL) {
-            std::cout << "removing list item" << std::endl;
             Node* tmp = cur->getNext();
             delete cur;
             cur = tmp;
@@ -47,6 +46,7 @@ void List::addFirst(int num)
 	current = head;
 }
 
+// append item to the end of the link list
 void List::addLast(int num)
 {
     Node *node = new Node(num);

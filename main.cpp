@@ -56,13 +56,30 @@ int main()
 
 	cout << "----------Input From File-----------" << endl;
 	cout << "opening input.txt" << endl;
-	bigInt* big = new bigInt();
+	bigInt* inputBig = new bigInt();
 	ifstream in;
 	in.open("input.txt");
-	big->readNumber(in);
+	inputBig->readNumber(in);
 	cout << "input.txt = ";
-	big->print();
-
+	inputBig->print();
 	cout<<endl;
+	bigInt* inputBig2 = new bigInt();
+	ifstream in2;
+	in2.open("input2.txt");
+	inputBig2->readNumber(in2);
+	cout << "input2.txt = ";
+	inputBig2->print();
+	cout<<endl;
+	cout<<endl;
+	cout << "-----Addition with input file-------" << endl;
+	cout << "input.txt + input2.txt: ";
+	bigInt add4(*inputBig + *inputBig2);
+	add4.print();
+	cout << endl;
+	cout << "input.txt + big3: ";
+	bigInt add5(*inputBig + big3);
+	add5.print();
+	cout << endl;
+	cout << endl;
 
 }
